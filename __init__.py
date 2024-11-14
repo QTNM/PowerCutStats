@@ -9,8 +9,9 @@ from scipy import integrate
 from scipy.stats import rice, rayleigh
 from scipy.stats import ks_2samp
 
-
 import glob
+import os
+import sys
 
 path = "../data/" # Path to save data
 
@@ -77,3 +78,87 @@ def H0_PDF(z, tau, N_bin, scipy=True):
 
 
 ############################# Rice Functions #################################################
+
+
+def rice_CDF(z, tau, x_k):
+    """
+    Compute the Rice CDF for given parameters |z|, tau, and |x_k|.
+
+    Parameters:
+    z    : float, the value at which to evaluate the CDF
+    tau  : float, scale parameter of the distribution
+    x_k  : float, amplitude of the k-th component of the signal frequency spectrum
+
+    Returns:
+    cdf  : float, the value of the Rice CDF at |z|
+    """
+    
+    return scipy.stats.rice.cdf(z, b=x_k, loc=0, scale=np.sqrt(tau/2))
+
+
+def manual_rice_CDF(z, tau, x_k):
+    """
+    Compute the Rice CDF for given parameters |z|, tau, and |x_k|.
+
+    Parameters:
+    z    : float, the value at which to evaluate the CDF
+    tau  : float, scale parameter of the distribution
+    x_k  : float, amplitude of the k-th component of the signal frequency spectrum
+
+    Returns:
+    cdf  : float, the value of the Rice CDF at |z|
+    """
+    def integrand(tilde_z):
+        """
+        Define the integrand function for the Rice CDF.
+        """
+        return (2 * tilde_z / tau) * np.exp(-(tilde_z**2 + x_k**2) / tau) * i0(2 * tilde_z * x_k / tau)
+    
+    # Perform the integration from |z| to infinity
+    vals = integrand(z)
+    
+    # Compute the integral
+    integral = scipy.integrate.quad(integrand, z, 1e-3)
+    
+    # Compute the Rice CDF
+    cdf = 1 - integral
+    return cdf
+
+def rice_cdf_log_space(z, tau, x_k):
+    """Compute the Rician CDF at z with parameters tau and x_k using log-space calculations."""
+    
+    def integrand_log_space(tilde_z, tau, x_k):
+        # Handle the case where x_k is very small
+        if x_k < 1e-8:
+            # If x_k is too small, the Bessel function approaches 1, and we can approximate it
+            log_bessel_term = 0
+        else:
+            # Otherwise calculate the Bessel function normally
+            bessel_argument = (2 * tilde_z * x_k) / tau
+            bessel_val = i0(bessel_argument)
+            log_bessel_term = np.log(bessel_val) if bessel_val > 0 else -np.inf
+        
+        # Logarithmic terms to avoid underflow
+        prefactor = 2 * tilde_z / tau
+        log_term1 = np.log(prefactor) if prefactor > 0 else -np.inf
+        
+        exp_term = -(tilde_z**2 + x_k**2) / tau
+        
+        # Return the sum of terms in log space and exponentiate at the end
+        return np.exp(log_term1 + exp_term + log_bessel_term)
+    
+    # Set a finite upper limit to prevent nan issues
+    upper_limit = z + 10 * tau  # Adjust this based on tau, though tau is very small here
+    
+    # Perform the integration using adaptive quadrature
+    integral_result, _ = quad(integrand_log_space, z, upper_limit, args=(tau, x_k), limit=100)
+    
+    # Return the CDF value
+    return 1 - integral_result
+
+def numerical_derivative_cdf(cdf_func, z_values, delta_z, *args):
+    return np.array([(cdf_func(z + delta_z, *args) - cdf_func(z - delta_z, *args)) / (2 * delta_z) for z in z_values])
+
+
+
+
