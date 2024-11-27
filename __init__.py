@@ -2,6 +2,7 @@ import numpy as np
 import matplotlib.pyplot as plt 
 import scipy 
 import h5py # Import h5py for saving data
+import awkward as ak
 
 from scipy.special import i0
 from scipy.integrate import quad, trapezoid
@@ -160,5 +161,31 @@ def numerical_derivative_cdf(cdf_func, z_values, delta_z, *args):
     return np.array([(cdf_func(z + delta_z, *args) - cdf_func(z - delta_z, *args)) / (2 * delta_z) for z in z_values])
 
 
+############################# Signal Functions #################################################
 
+B = 500e6
+k = 1.38e-23
+
+def generate_noise(T=T, samples=1000, resistance=1, B=B, k=k):
+    """Generates noise with a given temperature and resistance
+
+    Args:
+        T (float, optional): Temperature in Kelvin (K). Defaults to T.
+        samples (int, optional): Number of samples to generate. Defaults to 1000.
+        resistance (_type_, optional): Resistance in Ohms. Defaults to resistance.
+        B (_type_, optional): Bandwidth. Defaults to B.
+        k (_type_, optional): Boltzmann Constant. Defaults to k.
+
+    Returns:
+        noise_dist (arr): Noise distribution
+    """
+    
+    P_noise = k * T * B   # Noise Power (W) 
+
+    noise_dist = np.sqrt(resistance *0.5) * np.random.normal(0, np.sqrt(P_noise), samples) # Noise distribution
+
+    # plt.hist(noise_dist, bins=100)
+    # plt.show()
+
+    return noise_dist # Returns the noise distribution
 

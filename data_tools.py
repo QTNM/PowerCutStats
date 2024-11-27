@@ -1,16 +1,24 @@
 from __init__ import *
 
-path = "../data/" # Path to save data
+dir_path = "../data/" # Path to save data
+
+
+def set_data_path(file):
+    
+    return dir_path + file
+
 
 def get_signal(file, signal_string):
     
-    if not file.endswith('.h5'):
+    data_path = set_data_path(file)
+    
+    if not data_path.endswith('.h5'):
         raise ValueError("File must be an h5 file")
-    if not os.path.exists(file):
+    if not os.path.exists(data_path):
         raise FileNotFoundError("File does not exist")
     
     
-    with h5py.File(file, 'r') as f:
+    with h5py.File(data_path, 'r') as f:
         signal = f['Data'][signal_string][:]
         
     return signal
@@ -30,13 +38,15 @@ def get_attributes(file, verbose=False):
         list: List of attribute values
     """
     
-    if not file.endswith('.h5'):
+    data_path = set_data_path(file)
+    
+    if not data_path.endswith('.h5'):
         raise ValueError("File must be an h5 file")
     
-    if not os.path.exists(file):
+    if not os.path.exists(data_path):
         raise FileNotFoundError("File does not exist")
     
-    with h5py.File(file, 'r') as f:
+    with h5py.File(data_path, 'r') as f:
         signal_strings = list(f['Data'].keys()) # ['signal1', 'signal2']
 
         attrs_container = []
