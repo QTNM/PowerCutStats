@@ -3,6 +3,7 @@ import matplotlib.pyplot as plt
 import scipy 
 import h5py # Import h5py for saving data
 import awkward as ak
+import pandas as pd
 
 from scipy.special import i0
 from scipy.integrate import quad, trapezoid

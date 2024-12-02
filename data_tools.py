@@ -8,9 +8,13 @@ def set_data_path(file):
     return dir_path + file
 
 
-def get_signal(file, signal_string):
+def get_signal(file, signal_string, full_path=False):
     
-    data_path = set_data_path(file)
+    if full_path:
+        data_path = file
+        
+    else:
+        data_path = set_data_path(file)
     
     if not data_path.endswith('.h5'):
         raise ValueError("File must be an h5 file")
@@ -26,7 +30,7 @@ def get_signal(file, signal_string):
 
 
 
-def get_attributes(file, verbose=False):
+def get_attributes(file, verbose=False, full_path=False):
     """ Print the attributes of the signal in the h5 file
 
     Args:
