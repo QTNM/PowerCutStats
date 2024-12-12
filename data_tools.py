@@ -11,7 +11,9 @@ frame_strings = [           'File_name',
                           'Energy [eV]',
                  'LO frequency [Hertz]',
                 'Pitch angle [degrees]',
-           'Starting position [metres]',
+         'Starting x position [metres]',
+         'Starting y position [metres]',
+         'Starting z position [metres]',
     'Starting velocity [metres/second]',
                   'Time step [seconds]',
            'Waveguide impedance [Ohms]',
@@ -26,13 +28,16 @@ def set_data_path(file):
     return dir_path + file
 
 
-def get_signal(file, signal_string, full_path=False):
+def get_signal(file, signal_string, full_path=False, override_path=False):
     
     if full_path:
         data_path = file
         
     else:
         data_path = set_data_path(file)
+
+    if override_path:
+        data_path = override_path + file
     
     if not data_path.endswith('.h5'):
         raise ValueError("File must be an h5 file")
@@ -124,15 +129,17 @@ def get_truth_data(f_list, verbose=False, full_path=True, savefile=False):
         trap_type = f.split('/')[-3]
         vars = {
             'File_name': filename,
-            'signal': signal_strings[0], # signal1 only as default [0], signal2 is not used ([1])
+            'signal': signal_strings[0],
             'trap': trap_type,
-            'B_bkg': data[0][0], # Changing to data[1][0] will give the background field for signal2, repeat this for below if required
+            'B_bkg': data[0][0],
             'f_cyc': data[0][1],
             'f_cyc_d': data[0][2],
             'energy': data[0][3],
             'f_lo': data[0][4],
             'pitch_angle': data[0][5],
-            'r_0': [data[0][6]],
+            'r_x': float(data[0][6][0]),
+            'r_y': float(data[0][6][1]),
+            'r_z': float(data[0][6][2]),
             'v_0': [data[0][7]],
             'dt': data[0][8],
             'Z_wg': data[0][9],
