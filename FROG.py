@@ -19,19 +19,16 @@ R, Nch, kb, bw, Nsamp, T= 496.1709043911709, 1, 1.38e-23, 1000e6, 40960, 5
 R = 500 # Value inputted by user 
 
 
-
-
 def parse_inputs():
     parser = argparse.ArgumentParser(description="Analyze FFTs and generate PDFs/ROC curves.")
 
     # Required argument: input FFT file with 40960 samples (40.96 us)
     parser.add_argument("-i", "--input", required=True, help="Path to the input FFT file")
     
-    
     # Required argument: System Temperature
     parser.add_argument("-T", "--temperature", required=True, help="Value of System Temperature in Kelvin")
 
-    # Optional argument: output PDF file
+    # Optional argument: output location
     parser.add_argument("-o", "--output", default="figures/generated/output.pdf", help="Path to save the output PDF")
     
     # Optional argument: R value, default is 500
@@ -43,11 +40,17 @@ def parse_inputs():
     # Optional flag: Generate ROC curve
     parser.add_argument("--roc", action="store_true", help="Include this flag to generate an ROC curve")
 
+    # Optional flag: False Positive Rate
+    parser.add_argument("-fpr", "--fpr", type=float, default=0.01, help="False Positive Rate for ROC curve")
+    
     # Optional flag: Plot FFT
     parser.add_argument("--plotFFT", action="store_true", help="Include this flag to plot the FFT")
     
     # Optional flag: Plot PDF
     parser.add_argument("--plotPDF", action="store_true", help="Include this flag to plot the PDF")
+    
+    # Optional flag: Save Data and Plots
+    parser.add_argument("--save", action="store_true", help="Include this flag to save data and plots")
 
     # Parse arguments
     args = parser.parse_args()
