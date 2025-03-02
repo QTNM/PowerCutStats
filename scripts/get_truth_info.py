@@ -7,9 +7,9 @@ from testing import *
 
 
 save_dir = '../data/simulations_truth/'
-save_name = 'He0HAtomicScatters'
+save_name = 'TrueHeliumScatters_test'
 
-path_to_dir = '/Users/nathan/Desktop/HeFractionScatters/fixed atomic/' # Path to data
+path_to_dir = '/Users/nathan/Desktop/HeFractionScatters/TrueHeliumScatters/' # Path to data
 
 
 
@@ -32,7 +32,6 @@ if __name__ == "__main__":
     path_prefix = '../../../../' # Path Prefix
 
     for f in file_list: # Iterate through list of Files
-
         suffix = f.split('nathan/')[-1] # Get the suffix of the file
         true_path = path_prefix + suffix # Get the true path of the file
         file_sim_list.append(true_path) # Append the true path to the new list
@@ -44,32 +43,39 @@ if __name__ == "__main__":
 
     for i, f in enumerate(file_sim_list):
      
-        
-        signal_strings, keys, data = get_attributes(f, full_path=True)
-        filename = f.split('/')[-1]
-        trap_type = f.split('/')[-3]
-        
-        
-        keys.insert(0, 'File_name')
-        
-        if i == 0: # Initialise dictionary
-        
-            data_dict = {key: [] for key in keys}
-        
-        for j, key in enumerate(keys):
-            if j == 0:
-                value = filename
-            else:
-                value = data[0][j-1]
+        try:
+            signal_strings, keys, data = get_attributes(f, full_path=True)
+            filename = f.split('/')[-1]
+            trap_type = f.split('/')[-3]
             
-            # if isinstance(value, np.ndarray):
-            #     value = list(value)
-    
+            keys.insert(0, 'File_name')
+            
                 
-            data_dict[key].append(value)
             
-        if i % 100 == 0:
-            print(f'{i} files processed')
+            if i == 0: # Initialise dictionary
+            
+                data_dict = {key: [] for key in keys}
+            
+            for j, key in enumerate(keys):
+                if j == 0:
+                    value = filename
+                else:
+                    value = data[0][j-1]
+                
+                # if isinstance(value, np.ndarray):
+                #     value = list(value)
+        
+                    
+                data_dict[key].append(value)
+                
+            if i % 100 == 0:
+                print(f'{i} files processed')
+
+        except:
+            print(f'Error in file {f}')
+
+        
+        
             
         
     df = pd.DataFrame(data_dict)
