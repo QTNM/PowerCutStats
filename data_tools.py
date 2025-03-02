@@ -98,14 +98,15 @@ def get_attributes(file, verbose=False, full_path=False):
 
 def get_truth_data(f_list, verbose=False, full_path=True, savefile=False):
     """ Get the truth data from the h5 file and save it to a csv file
-
+        This is only applicable to some .h5 files as they don't always have the same file structure.
+        
     Args:
         f_list (.h5): Paths to h5 files
         verbose (bool, optional):  Defaults to False.
         full_path (bool, optional): Path to file. Defaults to True.
         savefile (bool, optional): Option to Save .csv . Defaults to False.
     """
-    
+#! TODO Improve this so that it isn't rigid, have it read out the Keys for the truth info and construct dataframe/csv from those keys.
     # Error handling
     if not isinstance(f_list, list):
         raise ValueError("f_list must be a list of file paths")
