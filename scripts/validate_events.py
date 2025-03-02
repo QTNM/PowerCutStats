@@ -6,7 +6,8 @@ from data_tools import *
 from testing import *
 
 path_to_dir = '../data/simulations_truth/' # Path to data
-file_name = 'He0HAtomicScatters.pkl'
+# file_name = 'He0HAtomicScatters.pkl'
+file_name = 'TrueHeliumScatters_test.pkl'
 
 path = path_to_dir + file_name
 
@@ -31,3 +32,6 @@ def validate_events(path):
         plt.hist(data_frame[column])
         plt.title(column)
         plt.show()
+        
+if __name__ == "__main__":
+    validate_events(path)
