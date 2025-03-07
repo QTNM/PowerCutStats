@@ -49,4 +49,8 @@ def get_dists(peaks, y, tau_1f, Nsamp):
     
     return signal_cdf, signal_pdf
 
-
+def calculate_noise_dists(vals, tau, Nsamp):
+    ray_cdf = (1-np.exp(-(vals**2)/tau)) ** Nsamp
+    ray_pdf = np.gradient(ray_cdf, vals[1]-vals[0])
+    
+    return ray_cdf, ray_pdf
