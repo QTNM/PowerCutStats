@@ -26,8 +26,8 @@ dir_path = "../../../../Desktop/BatchCreatedFiles/Bathtub/"
 def parse_inputs():
     parser = argparse.ArgumentParser(description="Analyze FFTs and generate PDFs/ROC curves.")
     
-    # Required argument: System Temperature
-    parser.add_argument("-T", "--temperature", required=True, help="Value of System Temperature in Kelvin")
+    # # Required argument: System Temperature
+    # parser.add_argument("-T", "--temperature", required=True, help="Value of System Temperature in Kelvin")
 
     # Optional argument: output location
     parser.add_argument("-o", "--output", default="figures/generated/output.pdf", help="Path to save the output PDF")
@@ -44,13 +44,12 @@ def parse_inputs():
     # Parse arguments
     args = parser.parse_args()
     
-    args.temperature = float(args.temperature)
+    # args.temperature = float(args.temperature)
     args.cut = float(args.cut)
     
     # Example usage of arguments
     print(f"Processing files")
     print(f"Saving output to: {args.output}")
-
 
     # Add actual processing logic here
     # (e.g., loading FFT, analyzing data, generating plots)
@@ -100,7 +99,7 @@ if __name__ == "__main__":
     #     starting_pos.append(np.linalg.norm(data_frame['Starting position [metres]'].values[i]))
     #     pitch_angles.append(data_frame['Pitch angle [degrees]'].values[i])
         
-    #     print(f"Processed {i+1} files")
+    #     # print(f"Processed {i+1} files")
         
     # print("Generating Initial Data Frame")
     
@@ -108,17 +107,21 @@ if __name__ == "__main__":
     #                 'Starting position [metres]': starting_pos,
     #                    'Pitch angle [degrees]': pitch_angles})
     
-    # df.to_csv("../data/simulations_truth/2Ddata_Bathtub.csv")
-    # df.to_pickle("../data/simulations_truth/2Ddata_Bathtub.pkl")
+    # df.to_csv("../data/simulations_truth/2Ddata_Bathtubv1.csv")
+    # df.to_pickle("../data/simulations_truth/2Ddata_Bathtubv1.pkl")
+    
+    # df["Path_to_data"] = df["Path_to_data"].astype(str)
+    
+    # df.to_parquet("../data/simulations_truth/2Ddata_Bathtubv1.pq")
     
     # print("Initial Data Frame Generated")
     # ## ================ Finished =================================
     
-    # # ================== Loading in Data Files ====================
-    # # Loading in data files
+    # ================== Loading in Data Files ====================
+    # Loading in data files
     
-    # # Change Harmonic to Bathtub and vice versa
-    # df = pd.read_pickle("../data/simulations_truth/2Ddata_Bathtub.pkl")
+    # Change Harmonic to Bathtub and vice versa
+    # df = pd.read_pickle("../data/simulations_truth/2Ddata_Bathtubv1.pkl")
     
     # true_paths_to_data = df['Path_to_data'].values
     # file_list = df['File_name'].values
@@ -140,7 +143,8 @@ if __name__ == "__main__":
         
     #     file_name = str(file_name)
         
-    #     print(f"Processing file no.{i+1}")
+    #     if i % 10 == 0:
+    #         print(f"Processing file no.{i}")
         
     #     signal_strings, attributes, attrs_container = get_attributes(file_name, full_path=True)
     #     signal = get_signal(file_name, signal_strings[0], full_path=True) # One polarisation
@@ -149,7 +153,7 @@ if __name__ == "__main__":
     
     #     R = attrs_container[0][10] # Make sure this is correct [9] for harmonic [10] for bathtub
         
-    #     print(f"Impedance: {R}")
+    #     # print(f"Impedance: {R}")
         
     #     n_pwr = kb * args.temperature * bw # noise power    
     #     tau_1t = n_pwr * R # noise variance single channel, time-domain (tau_1t)
@@ -170,19 +174,19 @@ if __name__ == "__main__":
 
     #     signal_pdf = np.gradient(signal_cdf, x[1]-x[0])
         
-    #     # fig, ax = plt.subplots(1, 1, figsize=(16, 8))
-    #     # ax.plot(x, signal_pdf, label="Signal PDF")
-    #     # ax.fill_between(x, signal_pdf, alpha=0.3)
-    #     # ax.plot(x, noise_pdf, label="Noise PDF")
-    #     # ax.fill_between(x, noise_pdf, alpha=0.3)
-    #     # ax.set_xlabel('Threshold')
-    #     # ax.set_ylabel('Probability Density')
-    #     # ax.legend()
-    #     # plt.show()
+        # fig, ax = plt.subplots(1, 1, figsize=(16, 8))
+        # ax.plot(x, signal_pdf, label="Signal PDF")
+        # ax.fill_between(x, signal_pdf, alpha=0.3)
+        # ax.plot(x, noise_pdf, label="Noise PDF")
+        # ax.fill_between(x, noise_pdf, alpha=0.3)
+        # ax.set_xlabel('Threshold')
+        # ax.set_ylabel('Probability Density')
+        # ax.legend()
+        # plt.show()
         
         
-    #     tpr = 1 - signal_cdf  # true positive rate
-    #     fpr = 1 - noise_cdf  # false positive rate
+        # tpr = 1 - signal_cdf  # true positive rate
+        # fpr = 1 - noise_cdf  # false positive rate
         
     #     # # plot roc curve for each event file
         
@@ -195,14 +199,14 @@ if __name__ == "__main__":
     #     # ax.grid(True)
     #     # plt.show()
         
-    #     signal_pdfs.append(np.array(signal_pdf))
-    #     noise_pdfs.append(np.array(noise_pdf))
+        # signal_pdfs.append(np.array(signal_pdf))
+        # noise_pdfs.append(np.array(noise_pdf))
         
-    #     signal_cdfs.append(np.array(signal_cdf))
-    #     noise_cdfs.append(np.array(noise_pdf))
+        # signal_cdfs.append(np.array(signal_cdf))
+        # noise_cdfs.append(np.array(noise_pdf))
         
-    #     tpr_vals.append(np.array(tpr))
-    #     fpr_vals.append(np.array(fpr))
+        # tpr_vals.append(np.array(tpr))
+        # fpr_vals.append(np.array(fpr))
         
 
  
@@ -242,69 +246,69 @@ if __name__ == "__main__":
 
             
     # =============================================================================
+    # Plotting
+    # =============================================================================
     
-    
-    df = pd.read_pickle("../data/simulations_truth/2Ddata_Bathtub_5.0K.pkl")
+    df = pd.read_parquet("../data/simulations_truth/FINAL_2Ddata_Bathtub_5.0K.pq")
     
     true_paths_to_data = df['Path_to_data'].values
     file_list = df['File_name'].values
     starting_pos = df['Starting position [metres]'].values
     pitch_angles = df['Pitch angle [degrees]'].values
-    TPR_vals = df['TPR'].values
-    FPR_vals = df['FPR'].values
+    tpr_vals = df['TPR'].values
+    fpr_vals = df['FPR'].values
+    signal_pdfs = df['Signal PDF'].values
+    noise_pdfs = df['Noise PDF'].values
+    signal_cdfs = df['Signal CDF'].values
+    noise_cdfs = df['Noise CDF'].values
+    detected_TPR_vals = df['Detected TPR'].values
+    defined_FPR = df['Defined FPR'].values
     
-    detected_TPR_vals = []
+    # detected_TPR_vals = []
     
-    for i in range(len(file_list)):
+    # for i in range(len(file_list)):
         
-        if i % 9 == 0:
+    #     if i % 10 == 0:
         
-            print(f"Processing file no.{i+1}")
+    #         print(f"Processing file no.{i+1}")
         
-        defined_FPR = 0.01
-        closest_value = np.argmin(np.abs(FPR_vals[i] - defined_FPR))
+    #     # defined_FPR = 0.01
+    #     closest_value = np.argmin(np.abs(FPR_vals[i] - defined_FPR))
         
-        detected_TPR_vals.append(TPR_vals[i][closest_value])
-        
-            
-    plt.tricontourf(pitch_angles[:len(detected_TPR_vals)], starting_pos[:len(detected_TPR_vals)], detected_TPR_vals, levels=100, cmap="viridis")
+    #     detected_TPR_vals.append(TPR_vals[i][closest_value])
+    
+    defined_FPR_val = defined_FPR[0]
+    
+    # plt.tricontourf(pitch_angles[:len(detected_TPR_vals)], starting_pos[:len(detected_TPR_vals)], detected_TPR_vals, levels=100, cmap="viridis")
     # plt.figure(figsize=(16, 8))
-    # plt.scatter(pitch_angles[:len(detected_TPR_vals)], starting_pos[:len(detected_TPR_vals)], c=detected_TPR_vals, cmap="viridis")  
+    plt.scatter(pitch_angles[:len(detected_TPR_vals)], starting_pos[:len(detected_TPR_vals)], c=detected_TPR_vals, cmap="viridis")  
     plt.colorbar(label="TPR at defined FPR")
     plt.xlabel("Pitch Angle [degrees]")
     plt.ylabel("Starting Position [metres]")
-    plt.title(f"TPR at FPR = {defined_FPR}")
+    plt.title(f"TPR at FPR = {defined_FPR_val}")
     plt.show()
-            
-        
-    print("Finished Processing Data Files")
-    
-    # print("Lengths of arrays")
-    
-    # print(len(file_list))
-    # print(len(true_paths_to_data))
-    # print(len(starting_pos))
-    # print(len(pitch_angles))
-    
-    # print(len(signal_pdfs))
-    # print(len(noise_pdfs))
-    # print(len(signal_cdfs))
-    # print(len(noise_cdfs))
-    # print(len(tpr_vals))
-    # print(len(fpr_vals))
-    
-    
-        
+                    
     # full_data_frame = pd.DataFrame({'File_name': file_list, 'Path_to_data': true_paths_to_data, 
     #                                 'Starting position [metres]': starting_pos,
     #                                 'Pitch angle [degrees]': pitch_angles, 'Signal PDF': signal_pdfs, 'Noise PDF': noise_pdfs,
     #                                 'Signal CDF': signal_cdfs, 'Noise CDF': noise_cdfs, 'TPR': tpr_vals, 'FPR': fpr_vals})
     
-    # if args.save:
-    #     print("Saving Data Frame")
-    #     full_data_frame.to_pickle(f"../data/simulations_truth/2Ddata_Bathtub_{args.temperature}K.pkl")
-    #     full_data_frame.to_csv(f"../data/simulations_truth/2Ddata_Bathtub_{args.temperature}K.csv")
-    #     print("Saved Data Frame")
+    # full_data_frame["Path_to_data"] = full_data_frame["Path_to_data"].astype(str)
+    
+    # print data frame data types
+    
+    # print(full_data_frame.dtypes)
+    
+    if args.save:
+        print("Saving Plot")
+        
+        plt.savefig('../figures/generated/2D_FPRvsPitchvsStartPos.pdf')
+        # plt.savefig(args.output)
+        
+        # full_data_frame.to_pickle(f"../data/simulations_truth/2Ddata_Bathtub_{args.temperature}K_v1.pkl")
+        # full_data_frame.to_csv(f"../data/simulations_truth/2Ddata_Bathtub_{args.temperature}K_v1.csv")
+        # full_data_frame.to_parquet(f"../data/simulations_truth/2Ddata_Bathtub_{args.temperature}K_v1.pq")
+        print("Saved Data Frame")
         
     
 
