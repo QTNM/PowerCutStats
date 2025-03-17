@@ -6,7 +6,7 @@ PowerCutStats is a repository for statistical analysis of event FFT power and no
 ## Features
 - FFT analysis for event power spectra
 - Noise characterization and statistical analysis
-- Matched filter and ROC curve generation
+- ROC curve generation
 - Data validation utilities
 
 ## Installation
